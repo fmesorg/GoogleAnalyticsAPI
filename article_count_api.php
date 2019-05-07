@@ -11,12 +11,16 @@ if(isset($_GET['article_name'])){
     echo json_encode($message);
     exit();
 }
+$pdfArticleName = $articleName."/?galley=pdf";
 $articleName .= '/';
+
 
 $analytics = initializeAnalytics();
 $response = getReport($analytics,$articleName);
+$pdfResponse = getReport($analytics,$pdfArticleName);
 //var_dump($response);
-printResults($response);
+$result = array("pageView"=> printResults($response), "pdfView"=>printResults($pdfResponse));
+echo json_encode($result);
 
 
 /**
@@ -118,10 +122,10 @@ function printResults($reports) {
                 $values = $metrics[$j]->getValues();
                 for ($k = 0; $k < count($values); $k++) {
                     $entry = $metricHeaders[$k];
-                    $pageViews[$entry->getName()] = $values[$k];
+                    $pageViews = $values[$k];
                 }
             }
         }
     }
-    echo json_encode($pageViews);
+    return $pageViews;
 }
