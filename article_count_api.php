@@ -127,5 +127,10 @@ function printResults($reports) {
             }
         }
     }
-    return $pageViews;
+    if (empty($pageViews)){
+        return 0;
+    }else{
+        return $pageViews;
+    }
+
 }
