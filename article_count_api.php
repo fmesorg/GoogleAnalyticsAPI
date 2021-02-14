@@ -4,7 +4,6 @@
 require_once __DIR__ . '/googleAPI/vendor/autoload.php';
 $articleName = '/articles/';
 if(isset($_GET['article_name'])){
-
     $articleName .= $_GET['article_name'];
 }else{
     $message['response'] = "Parameter missing";
@@ -127,7 +126,7 @@ function printResults($reports) {
             }
         }
     }
-    if (empty($pageViews)){
+    if (empty($pageViews)||is_null($pageViews)){
         return 0;
     }else{
         return $pageViews;

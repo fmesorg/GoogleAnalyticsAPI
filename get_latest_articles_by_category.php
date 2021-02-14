@@ -3,20 +3,25 @@
 // Load the Google API PHP Client Library.
 require_once __DIR__ . '/googleAPI/vendor/autoload.php';
 
-
+/*
+    "Research Ethics",
+    "Clinical Ethics",
+    "Public Health Ethics",
+    "Reproductive Ethics",
+    "Healthcare Humanities",
+    "Humanitarian Ethics",
+    "Organisational Ethics",
+    "Students Corner",
+*/
 
 $analytics = initializeAnalytics();
 $categories = [
-    " Research Ethics ",
-    " Clinical Ethics ",
-    " Public Health Ethics ",
-    " Reproductive Ethics ",
-    " Healthcare Humanities ",
-    " Humanitarian Ethics ",
-    " Organisational Ethics ",
-    " Students Corner ",
-    " Articles ",
-    " Comments "
+    "COVID-19",
+    "Articles",
+    "Comments",
+    "Editorials",
+    "From the Press",
+    "Case Studies",
 ];
 
 $result=array();
@@ -81,8 +86,9 @@ function getReport($analytics,$category) {
     //Dimension Filter
     $dimensionFilter = new Google_Service_AnalyticsReporting_DimensionFilter();
     $dimensionFilter->setDimensionName("ga:dimension1");
-    $dimensionFilter->setOperator("EXACT");
-    $dimensionFilter->setExpressions(array($category));
+    $dimensionFilter->setOperator("REGEXP");
+    $category_regex = '^\s'.$category.'\s$';
+    $dimensionFilter->setExpressions(array($category_regex));
 
     $dimensionFilterClause = new Google_Service_AnalyticsReporting_DimensionFilterClause();
     $dimensionFilterClause->setFilters($dimensionFilter);
@@ -137,13 +143,9 @@ function printResults($reports){
             $categoryArr["category"] = $dimensions[1];
             $categoryArr["pageTitle"] = $dimensions[0];
             $categoryArr["pageViews"] = $metrics[0]->getValues()[0];
-
-            echo json_encode($categoryArr);
-
-            return $dimensions[0];
-
+            $pageTitle = $dimensions[0];
+            $replace_what =" | Indian Journal of Medical Ethics";
+            return str_replace($replace_what,"",$pageTitle);
         }
-
     }
-
 }
