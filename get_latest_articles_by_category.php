@@ -23,6 +23,7 @@ $categories = [
     "From the Press",
     "Case Studies",
 ];
+//This list should match what is in the mostread-bycategory.php file
 
 $result=array();
 
